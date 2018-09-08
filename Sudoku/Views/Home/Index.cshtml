@@ -1,0 +1,63 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.0.0.min.js"></script>
+    <link href="~/Content/Game/StyleSheet1.css" rel="stylesheet" />
+    <title>Index</title>
+    <style>
+        li{
+            list-style-type: none;
+            margin-top: 20px;
+        }
+        ul{
+            margin-left: 0;
+            padding: 0;
+        }
+        button{
+            width: 200px;
+            height: 50px;
+            font-size: 20pt;
+        }
+        .DifficultyList{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header style="height: 150px;">
+
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col" style="text-align: center;">
+                <h1>Выберите сложность</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="DifficultyList">
+                    
+                    @using (Html.BeginForm("CreateTheTable", "Home", FormMethod.Post))
+                    {
+                    <div>
+                        <p>Введите количество значений, которые будут показаны</p>
+                        @Html.TextBox("level",null, new { @autocomplete = "off" })
+                    </div>
+                    <input type="submit" value="Подтвердить"/>
+                    }
+                </div>
+            </div>
+        </div>
+        <script>
+
+        </script>
+    </div>
+</body>
+</html>
