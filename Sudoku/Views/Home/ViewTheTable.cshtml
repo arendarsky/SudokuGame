@@ -13,16 +13,32 @@
     <script src="~/Scripts/jquery-3.0.0.min.js"></script>
     <title>CreateTheTable</title>
     <style>
-        .SudokuTable{
-            text-align:center;
+        .SudokuTable {
+            text-align: center;
         }
-        .SudokuValues{
-            width:40px;
-            height:40px;
-            font-size:20pt;
-            text-align:center;
+
+        .SudokuValues {
+            width: 40px;
+            height: 40px;
+            font-size: 20pt;
+            text-align: center;
         }
     </style>
+    <script>
+        function Change(Id) {
+            v = document.getElementById(Id).value;
+            if (v < '0' || v > '9') {
+                document.getElementById(Id).value = '';
+            }
+            if (document.getElementById(Id).value != '') {
+                document.getElementById(Id).style.background = "yellow";
+            }
+            else {
+                document.getElementById(Id).style.background = "white";
+            }
+
+        }
+    </script>
 </head>
 <body>
     <header style="height:100px;">
@@ -65,9 +81,11 @@
                                                                    @maxlength = "1",
                                                                    @type = "text",
                                                                    @Value = "",
-                                                                   @autocomplete = "off"
+                                                                   @id = $"{i}, {j}",
+                                                                   @autocomplete = "off",
+                                                                   @onchange = "Change(this.id)"
                                                                }
-                                                           })
+                                                                })
                                                             }
                                                             else
                                                             {
@@ -98,7 +116,9 @@
                                                                            @maxlength = "1",
                                                                            @type = "text",
                                                                            @autocomplete = "off",
-                                                                           @style = "background: red;"
+                                                                           @style = "background: red;",
+                                                                           @id = $"{i}, {j}",
+                                                                           @onchange = "Change(this.id)"
                                                                        }
                                                                    })
                                                                     }
@@ -113,7 +133,9 @@
                                                                            @maxlength = "1",
                                                                            @type = "text",
                                                                            @autocomplete = "off",
-                                                                           @style = "background: SpringGreen;"
+                                                                           @style = "background: SpringGreen;",
+                                                                           @id = $"{i}, {j}",
+                                                                           @onchange = "Change(this.id)"
                                                                        }
                                                                    })
                                                                     }
@@ -140,9 +162,7 @@
                             </div>
 
                 }
-                        <script>
-
-                        </script>
+                    
                 </div>
             <div class="col" style="text-align:center; margin-left:20px;">
                 <h4>Правила</h4>

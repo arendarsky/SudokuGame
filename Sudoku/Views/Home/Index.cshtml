@@ -29,6 +29,7 @@
             text-align: center;
         }
     </style>
+   
 </head>
 <body>
     <header style="height: 150px;">
@@ -43,7 +44,13 @@
                     {
                         <div style="margin-top:20px;">
                             <label>Введите количество значений, которые будут показаны</label><br/>
-                            @Html.TextBox("level", null, new { @autocomplete = "off" })
+                            @Html.TextBox("level", null, new {
+                           @autocomplete = "off",
+                           @type = "number",
+                           @min = "0",
+                           @max = "81",
+                           @required = "true"
+                       })
                         </div>
                         <div style="margin-top:20px;">
                             <input type="submit" value="Создать таблицу" />
