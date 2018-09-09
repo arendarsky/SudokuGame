@@ -11,16 +11,19 @@ namespace Sudoku.Models
         public int Value { get; set; }
         public bool Hidden { get; set; }
         public bool IsEditable { get; set; }
+        public bool Wrong { get; set; }
         public Cell(int value)
         {
             Value = value;
             Hidden = false;
             IsEditable = false;
+            Wrong = false;
         }
         public Cell()
         {
             Hidden = false;
             IsEditable = false;
+            Wrong = false;
         }
     }
     public class SudokuTable
@@ -29,6 +32,7 @@ namespace Sudoku.Models
         const int _size = 9;
         public Cell[,] Values { get; set; }
         public int Difficulty { get; set; }
+        public bool IsNotCorrect { get; set; }
 
 
         public SudokuTable(int difficulty)
@@ -45,13 +49,82 @@ namespace Sudoku.Models
                 for (int j = 0; j < _size; j++)
                     Values[i, j] = new Cell();
         }
-       /* public SudokuTable()
+
+
+        public void CheckIfTheTableIsCorrect()
         {
-            Values = new Cell[_size, _size];
             for (int i = 0; i < _size; i++)
+            {
                 for (int j = 0; j < _size; j++)
-                    Values[i, j] = new Cell(0);
-        }*/
+                {
+                    if (Values[i, j].Value == 0)
+                    {
+                        IsNotCorrect = true;
+                        continue;
+                    }
+                    for (int k = j + 1; k < _size; k++)
+                        if (Values[i, j].Value == Values[i, k].Value)
+                        {
+                            if (Values[i, j].IsEditable)
+                                Values[i, j].Wrong = true;
+                            if (Values[i, k].IsEditable)
+                                Values[i, k].Wrong = true;
+                            IsNotCorrect = true;
+                        }
+                    for (int k = i + 1; k < _size; k++)
+                        if (Values[i, j].Value == Values[k, j].Value)
+                        {
+                            if (Values[i, j].IsEditable)
+                                Values[i, j].Wrong = true;
+                            if(Values[k, j].IsEditable)
+                                Values[k, j].Wrong = true;
+                            IsNotCorrect = true;
+                        }
+                }
+            }
+            for (int i = 0; i < _size/3; i++)
+            {
+                for (int j = 0; j < _size / 3; j++)
+                {
+                    for (int k = i * 3; k < _size / 3 * (1 + i); k++)
+                    {
+                        for (int m = j * 3; m < _size / 3 * (1 + j); m++)
+                        {
+                            if (Values[k, m].Value == 0)
+                            {
+                                IsNotCorrect = true;
+                                continue;
+                            }
+                            for (int x = m+1; x < _size/3*(1+j); x++)
+                            {
+                                if (Values[k, m].Value == Values[k, x].Value)
+                                {
+                                    if (Values[k, m].IsEditable)
+                                        Values[k, m].Wrong = true;
+                                    if (Values[k, x].IsEditable)
+                                        Values[k, x].Wrong = true;
+                                    IsNotCorrect = true;
+                                }
+                            }
+                            for (int c = k+1; c < _size/3*(1 + i); c++)
+                            {
+                                for (int x = j*3; x < _size/3*(1+j); x++)
+                                {
+                                    if (Values[k, m].Value == Values[c, x].Value)
+                                    {
+                                        if (Values[k, m].IsEditable)
+                                            Values[k, m].Wrong = true;
+                                        if (Values[c, x].IsEditable)
+                                            Values[c, x].Wrong = true;
+                                        IsNotCorrect = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
 
         private void GenerateTable()
@@ -163,12 +236,10 @@ namespace Sudoku.Models
             Random r = new Random();
             do
             {
-                for (int i = 0; i < _size; i++)
-                {
+                int i = r.Next(0, _size);
+                int j = r.Next(0, _size);
                     if (AmmountOfHiddenValues == 0)
                         break;
-                    for (int j = 0; j < _size; j++)
-                    {
                         if (AmmountOfHiddenValues == 0)
                             break;
                         int Hide = r.Next(0, 2);
@@ -186,8 +257,6 @@ namespace Sudoku.Models
                                 else
                                     break;
                         }
-                    }
-                }
             }
             while (AmmountOfHiddenValues > 0);
         }

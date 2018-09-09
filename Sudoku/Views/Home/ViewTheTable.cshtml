@@ -3,9 +3,6 @@
 @{
     Layout = null;
 }
-@{ 
-    string IsReadonly = "false";
-}
 
 <!DOCTYPE html>
 
@@ -19,86 +16,145 @@
         .SudokuTable{
             text-align:center;
         }
+        .SudokuValues{
+            width:40px;
+            height:40px;
+            font-size:20pt;
+            text-align:center;
+        }
     </style>
 </head>
 <body>
-    <header style="height:150px;">
-
+    <header style="height:100px;">
+        
     </header>
     <div class="container">
+        <div class="Row">
+            <div class="col" , style="text-align: center">
+                <button onclick="location.href = '@Url.Action("Index")'">Создать новую таблицу</button>
+            </div>
+        </div>
         <div class="row">
+            <div class="col"></div>
             <div class="col">
+                @using (Html.BeginForm("CheckTheTable", "Home", FormMethod.Post))
+                {
                 <div class="SudokuTable">
-                    @using (Html.BeginForm("CheckTheTable", "Home", FormMethod.Post))
-                    {
-                        <table style="max-width:500px; margin: auto;">
-
-                            @for (int i = 0; i < 9; i++)
-                            {
-                                <tr>
-                                    @for (int j = 0; j < 9; j++)
-                                    {
-                                    <td>
-                                        @if (Model.Values[i, j].Hidden)
-                                        {
-                                            @Html.EditorFor(m => m.Values[i, j].Value, new
-                                       {
-                                           htmlAttributes = new
-                                           {
-                                               @class = "SudokuValues",
-                                               @size = "1",
-                                               @maxlength = "1",
-                                               @type = "text",
-                                               @Value = "",
-                                               @autocomplete = "off"
-                                           }
-                                       })
-                                        }
-                                        else
-                                        {
-                                            if (!Model.Values[i, j].IsEditable)
+                    <table style=" margin-top:20px; border:solid;">
+                        @for (int k = 0; k < 3; k++)
+                        {
+                            <tr style="padding:0">
+                                @for (int c = 0; c < 3; c++)
+                                {
+                                    <td style="padding:0">
+                                        <table style="border:solid">
+                                            @for (int i = k * 3; i < 3 * (k + 1); i++)
                                             {
-                                                @Html.EditorFor(m => m.Values[i, j].Value, new
-                                           {
-                                               htmlAttributes = new
-                                               {
-                                                   @class = "SudokuValues",
-                                                   @size = "1",
-                                                   @maxlength = "1",
-                                                   @type = "text",
-                                                   @readonly = "true"
-                                               }
-                                           })
-                                            }
-                                            else
-                                            {
-                                                @Html.EditorFor(m => m.Values[i, j].Value, new
-                                               {
-                                                   htmlAttributes = new
-                                                   {
-                                                       @class = "SudokuValues",
-                                                       @size = "1",
-                                                       @maxlength = "1",
-                                                       @type = "text",
-                                                       @autocomplete = "off" 
-                                                   }
-                                          })
-                                            }
+                                                <tr>
+                                                    @for (int j = c * 3; j < 3 * (c + 1); j++)
+                                                    {
+                                                        <td>
+                                                            @if (Model.Values[i, j].Hidden)
+                                                            {
+                                                                @Html.EditorFor(m => m.Values[i, j].Value, new
+                                                           {
+                                                               htmlAttributes = new
+                                                               {
+                                                                   @class = "SudokuValues",
+                                                                   @size = "1",
+                                                                   @maxlength = "1",
+                                                                   @type = "text",
+                                                                   @Value = "",
+                                                                   @autocomplete = "off"
+                                                               }
+                                                           })
+                                                            }
+                                                            else
+                                                            {
+                                                                if (!Model.Values[i, j].IsEditable)
+                                                                {
+                                                                    @Html.EditorFor(m => m.Values[i, j].Value, new
+                                                               {
+                                                                   htmlAttributes = new
+                                                                   {
+                                                                       @class = "SudokuValues",
+                                                                       @size = "1",
+                                                                       @maxlength = "1",
+                                                                       @type = "text",
+                                                                       @readonly = "true"
+                                                                   }
+                                                               })
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (Model.Values[i, j].Wrong)
+                                                                    {
+                                                                        @Html.EditorFor(m => m.Values[i, j].Value, new
+                                                                   {
+                                                                       htmlAttributes = new
+                                                                       {
+                                                                           @class = "SudokuValues",
+                                                                           @size = "1",
+                                                                           @maxlength = "1",
+                                                                           @type = "text",
+                                                                           @autocomplete = "off",
+                                                                           @style = "background: red;"
+                                                                       }
+                                                                   })
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @Html.EditorFor(m => m.Values[i, j].Value, new
+                                                                   {
+                                                                       htmlAttributes = new
+                                                                       {
+                                                                           @class = "SudokuValues",
+                                                                           @size = "1",
+                                                                           @maxlength = "1",
+                                                                           @type = "text",
+                                                                           @autocomplete = "off",
+                                                                           @style = "background: SpringGreen;"
+                                                                       }
+                                                                   })
+                                                                    }
+
+                                                                }
 
 
-                                        }
+                                                            }
+                                                        </td>
+                                                    }
+                                                </tr>
+                                            }
+
+                                        </table>
                                     </td>
-                                    }
-                                </tr>
-                            }
-
-                        </table>
-                        <input value="Проверить" type="submit" />
-                    }
-                    <script>
-
-                    </script>
+                                }
+                            </tr>
+                        }
+                    </table>
                 </div>
+
+                            <div style="text-align: center; margin-top:20px;">
+                                <input value="Проверить" type="submit" />
+                            </div>
+
+                }
+                        <script>
+
+                        </script>
+                </div>
+            <div class="col" style="text-align:center; margin-left:20px;">
+                <h4>Правила</h4>
+                <p>
+                    Заполните свободные клетки цифрами от 1 до 9 так,
+                    чтобы в каждой строке, в каждом столбце и в каждом малом квадрате 3×3
+                    каждая цифра встречалась бы только один раз.
+                </p>
+                <h4>Ваш счет: @ViewBag.Score</h4>
+                    <div style="text-align: center; margin-top:20px;">
+                        <button onclick="location.href = '@Url.Action("ClearTheTable")'">Очистить таблицу</button>
+                    </div>
             </div>
         </div>
         

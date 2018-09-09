@@ -36,21 +36,23 @@
     </header>
     <div class="container">
         <div class="row">
-            <div class="col" style="text-align: center;">
-                <h1>Выберите сложность</h1>
-            </div>
-        </div>
-        <div class="row">
             <div class="col">
                 <div class="DifficultyList">
-                    
+                    <h1>Новая таблица судоку</h1>
                     @using (Html.BeginForm("CreateTheTable", "Home", FormMethod.Post))
                     {
-                    <div>
-                        <p>Введите количество значений, которые будут показаны</p>
-                        @Html.TextBox("level",null, new { @autocomplete = "off" })
-                    </div>
-                    <input type="submit" value="Подтвердить"/>
+                        <div style="margin-top:20px;">
+                            <label>Введите количество значений, которые будут показаны</label><br/>
+                            @Html.TextBox("level", null, new { @autocomplete = "off" })
+                        </div>
+                        <div style="margin-top:20px;">
+                            <input type="submit" value="Создать таблицу" />
+                        </div>
+                        <div style="margin-top:20px;">
+                            <h4>Ваш счет: @ViewBag.Score</h4>
+                        </div>
+                     
+                        
                     }
                 </div>
             </div>
